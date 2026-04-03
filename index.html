@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Noga Curves — Wholesale Catalog</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --coral:#F39A8B;--gold:#D7B46B;--cream:#f1e5ca;--dark:#1a1209;
+  --text:#2c1f0e;--muted:#8a7a65;--border:#e4d5b8;--white:#fdfaf5;
+  --overlay:rgba(26,18,9,0.93);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);font-size:14px;line-height:1.6}
+
+/* HEADER */
+.hdr{background:var(--dark);padding:26px 32px 20px;text-align:center}
+.hdr h1{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;color:var(--cream);letter-spacing:.04em;margin-bottom:5px}
+.hdr p{color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+
+/* FAQ ACCORDION */
+.faq-section{background:linear-gradient(135deg,#1e1510 0%,#2a1c0d 100%);padding:36px 32px}
+.faq-title{text-align:center;margin-bottom:28px}
+.faq-title span{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:500}
+.faq-title h2{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--cream);margin-top:8px}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:960px;margin:0 auto}
+@media(max-width:680px){.faq-grid{grid-template-columns:1fr}}
+.faq-item{border:1px solid rgba(215,180,107,.2);border-radius:6px;overflow:hidden}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;background:rgba(255,255,255,.04);transition:background .2s;gap:12px}
+.faq-q:hover{background:rgba(255,255,255,.07)}
+.faq-q span{font-size:13px;font-weight:500;color:var(--cream);line-height:1.4}
+.faq-icon{width:22px;height:22px;border-radius:50%;border:1px solid rgba(215,180,107,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .3s,background .2s}
+.faq-icon svg{width:10px;height:10px;stroke:var(--gold);transition:transform .3s}
+.faq-item.open .faq-icon{background:var(--gold)}
+.faq-item.open .faq-icon svg{stroke:var(--dark);transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.faq-item.open .faq-a{max-height:400px}
+.faq-a-inner{padding:14px 18px 18px;border-top:1px solid rgba(215,180,107,.1)}
+.faq-a-inner p{font-size:12px;color:rgba(241,229,202,.72);line-height:1.7}
+.faq-a-inner ul{margin-top:8px;padding-left:16px}
+.faq-a-inner ul li{font-size:12px;color:rgba(241,229,202,.72);line-height:1.7;margin-bottom:4px}
+.faq-a-inner strong{color:var(--cream);font-weight:500}
+
+/* FILTERS */
+.fbar{background:var(--cream);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;gap:9px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:50}
+.fl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.fsel,.srch{border:1px solid var(--border);background:var(--white);color:var(--text);padding:7px 28px 7px 11px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238a7a65' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center}
+.srch{width:180px;padding:7px 11px;background-image:none}
+.srch:focus,.fsel:focus{outline:1px solid var(--gold)}
+.rcnt{margin-left:auto;font-size:11px;color:var(--muted)}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:400px){.grid{grid-template-columns:1fr}}
+
+/* CARD */
+.card{background:var(--white);display:flex;flex-direction:column;cursor:pointer;transition:background .18s;position:relative}
+.card:hover{background:#fdf6ec}
+.card.sel{background:#fff9f0;outline:2px solid var(--gold);outline-offset:-2px}
+.iw{aspect-ratio:1;overflow:hidden;background:#f5f0e8;position:relative;display:flex;align-items:center;justify-content:center}
+.iw img{width:100%;height:100%;object-fit:contain;padding:10px;transition:transform .4s ease}
+.card:hover .iw img{transform:scale(1.04)}
+.bc{position:absolute;top:8px;left:8px;font-size:9px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;padding:3px 7px;border-radius:2px}
+.bcH{background:var(--dark);color:var(--cream)}
+.bcM{background:var(--gold);color:var(--dark)}
+.bcN{background:var(--border);color:var(--muted)}
+.bu{position:absolute;top:8px;right:8px;font-size:9px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:2px}
+.buP{background:var(--coral);color:#fff}
+.buD{background:rgba(255,255,255,.85);color:var(--muted)}
+.info{padding:12px 14px 10px;flex:1;display:flex;flex-direction:column;gap:3px}
+.sc{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.psku{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:500}
+.pcat{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;text-align:right}
+.pname{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;color:var(--dark);line-height:1.3;margin-top:3px}
+.pdesc{font-size:11px;color:var(--muted);line-height:1.4;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.vmore{font-size:10px;color:var(--gold);letter-spacing:.06em;margin-top:4px;cursor:pointer;background:none;border:none;padding:0;font-family:'DM Sans',sans-serif;text-align:left}
+.qrow{display:flex;align-items:center;gap:7px;margin-top:10px;padding-top:9px;border-top:1px solid var(--border)}
+.ql{font-size:10px;color:var(--muted);flex:1}
+.qc{display:flex;align-items:center;border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.qb{background:var(--cream);border:none;width:26px;height:26px;font-size:15px;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;transition:background .12s;font-weight:300}
+.qb:hover{background:var(--gold);color:#fff}
+.qi{width:38px;height:26px;border:none;border-left:1px solid var(--border);border-right:1px solid var(--border);text-align:center;font-family:'DM Sans',sans-serif;font-size:12px;background:#fff;color:var(--dark)}
+.qi:focus{outline:none}
+.ab{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:3px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.ab:hover,.ab.on{background:var(--dark);border-color:var(--dark);color:var(--cream)}
+
+/* MODAL */
+.mov{display:none;position:fixed;inset:0;background:var(--overlay);z-index:200;align-items:center;justify-content:center;padding:14px}
+.mov.open{display:flex}
+.mbox{background:var(--white);border-radius:8px;max-width:1000px;width:100%;max-height:95vh;overflow:hidden;display:grid;grid-template-columns:1.1fr 1fr;position:relative;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+@media(max-width:680px){.mbox{grid-template-columns:1fr;max-height:96vh;overflow-y:auto}}
+.mimg{background:#f5f0e8;display:flex;align-items:center;justify-content:center;min-height:480px}
+.mimg img{width:100%;height:100%;object-fit:contain;max-height:95vh;padding:16px}
+@media(max-width:680px){.mimg{min-height:260px}.mimg img{max-height:320px}}
+.mcl{position:absolute;top:12px;right:12px;background:rgba(26,18,9,.65);border:none;color:#fff;width:34px;height:34px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;transition:background .15s}
+.mcl:hover{background:var(--dark)}
+.minfo{padding:28px 26px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;max-height:95vh}
+@media(max-width:680px){.minfo{max-height:none;padding:20px 18px}}
+.mtags{display:flex;gap:6px;flex-wrap:wrap}
+.mt{font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:2px}
+.mt-cat{background:var(--cream);color:var(--muted)}
+.mt-cH{background:var(--dark);color:var(--cream)}
+.mt-cM{background:var(--gold);color:var(--dark)}
+.mt-cN{background:var(--border);color:var(--muted)}
+.mt-uP{background:var(--coral);color:#fff}
+.mt-uD{background:var(--border);color:var(--muted)}
+.msku{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:500}
+.mname{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:var(--dark);line-height:1.25}
+.mdesc{font-size:13px;color:var(--muted);line-height:1.7}
+.mdiv{height:1px;background:var(--border)}
+
+/* PRICE CALCULATOR */
+.pcalc{background:#fdf6ec;border:1px solid var(--border);border-radius:6px;padding:16px}
+.pcalc-title{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:12px}
+.pcalc-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.pcalc-row label{font-size:12px;color:var(--muted);min-width:60px}
+.pcalc-inp{border:1px solid var(--border);background:#fff;color:var(--dark);padding:8px 12px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:13px;width:100px;text-align:center}
+.pcalc-inp:focus{outline:1px solid var(--gold)}
+.pcalc-result{background:var(--dark);border-radius:5px;padding:12px 14px;display:none}
+.pcalc-result.show{display:block}
+.pcalc-unit{font-size:11px;color:var(--gold);margin-bottom:4px;letter-spacing:.06em;text-transform:uppercase}
+.pcalc-price{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;color:var(--cream)}
+.pcalc-total{font-size:12px;color:rgba(241,229,202,.6);margin-top:3px}
+.pcalc-warn{font-size:11px;color:var(--coral);margin-top:6px}
+
+.mqr{display:flex;align-items:center;gap:10px}
+.mql{font-size:12px;color:var(--muted)}
+.mqc{display:flex;align-items:center;border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.mqb{background:var(--cream);border:none;width:34px;height:34px;font-size:18px;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;transition:background .12s}
+.mqb:hover{background:var(--gold);color:#fff}
+.mqi{width:50px;height:34px;border:none;border-left:1px solid var(--border);border-right:1px solid var(--border);text-align:center;font-family:'DM Sans',sans-serif;font-size:14px;background:#fff;color:var(--dark)}
+.mqi:focus{outline:none}
+.mab{flex:1;background:var(--dark);border:none;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:11px 16px;border-radius:4px;cursor:pointer;transition:background .18s}
+.mab:hover{background:#2e1a0a}
+.mab.on{background:var(--coral)}
+
+/* FLOAT */
+.fcta{position:fixed;bottom:20px;right:20px;background:var(--dark);color:var(--cream);border:none;padding:13px 22px;border-radius:40px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:.06em;cursor:pointer;display:flex;align-items:center;gap:9px;box-shadow:0 4px 20px rgba(0,0,0,.3);transition:all .2s;z-index:100;opacity:0;transform:translateY(8px);pointer-events:none}
+.fcta.vis{opacity:1;transform:translateY(0);pointer-events:all}
+.fcta:hover{background:#2e1a0a;transform:translateY(-2px)}
+.fbadge{background:var(--coral);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:600}
+
+/* QUOTE PANEL */
+.qp{position:fixed;bottom:0;left:0;right:0;background:var(--dark);color:var(--cream);transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);z-index:150;max-height:88vh;overflow-y:auto}
+.qp.open{transform:translateY(0)}
+.qpt{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:1px solid rgba(255,255,255,.1);cursor:pointer;background:var(--dark);position:sticky;top:0;z-index:2}
+.qpt h3{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;color:var(--cream);display:flex;align-items:center;gap:8px}
+.qbadge{background:var(--coral);color:#fff;border-radius:50%;width:22px;height:22px;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:600}
+.xcl{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;padding:0 4px}
+.xcl:hover{color:var(--cream)}
+.qpb{padding:22px 32px}
+@media(max-width:600px){.qpb{padding:16px}.qpt{padding:14px 16px}}
+.qitems{margin-bottom:24px}
+.qitem{display:grid;grid-template-columns:46px 1fr auto auto;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.qiimg{width:46px;height:46px;object-fit:contain;border-radius:3px;background:#2a1f10;padding:3px}
+.qiname{font-size:12px;color:var(--cream);line-height:1.3}
+.qisku{font-size:9px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.qiqty{font-size:12px;color:var(--muted);white-space:nowrap}
+.qirm{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:3px;line-height:1}
+.qirm:hover{color:var(--coral)}
+.qform{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+@media(max-width:600px){.qform{grid-template-columns:1fr}}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg.full{grid-column:1/-1}
+.fg label{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:500}
+.fg input,.fg textarea,.fg select{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:var(--cream);padding:9px 13px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:12px;transition:border-color .18s}
+.fg input:focus,.fg textarea:focus,.fg select:focus{outline:none;border-color:var(--gold);background:rgba(255,255,255,.1)}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.22)}
+.fg textarea{resize:vertical;min-height:72px}
+.fg select option{background:var(--dark)}
+.sbtn{grid-column:1/-1;background:var(--gold);color:var(--dark);border:none;padding:13px 28px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;border-radius:4px;cursor:pointer;transition:all .18s;margin-top:6px}
+.sbtn:hover{background:var(--coral)}
+.sbtn:disabled{opacity:.5;cursor:not-allowed}
+
+/* SUCCESS */
+.sov{display:none;position:fixed;inset:0;background:rgba(26,18,9,.9);z-index:300;align-items:center;justify-content:center}
+.sov.show{display:flex}
+.sbox{background:var(--white);padding:48px 44px;border-radius:8px;text-align:center;max-width:400px}
+.sico{font-size:44px;margin-bottom:14px}
+.sbox h2{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--dark);margin-bottom:8px}
+.sbox p{color:var(--muted);font-size:13px;line-height:1.6}
+.sccl{margin-top:22px;background:var(--dark);color:var(--cream);border:none;padding:11px 30px;border-radius:4px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.06em}
+.empty{grid-column:1/-1;padding:70px 32px;text-align:center;color:var(--muted)}
+.empty h3{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--text);margin-bottom:6px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>Wholesale Catalog</h1>
+  <p>Noga Curves &nbsp;·&nbsp; ISO 9001:2015 Certified &nbsp;·&nbsp; Made in Colombia &nbsp;·&nbsp; Ships from Colombia &nbsp;·&nbsp; 70+ References</p>
+</div>
+
+<!-- FAQ ACCORDION -->
+<div class="faq-section">
+  <div class="faq-title">
+    <span>Wholesale Guidelines</span>
+    <h2>Everything You Need to Know</h2>
+  </div>
+  <div class="faq-grid" id="faqGrid"></div>
+</div>
+
+<div class="fbar">
+  <span class="fl">Filter</span>
+  <input class="srch" type="text" id="srch" placeholder="Name or SKU...">
+  <select class="fsel" id="fcat">
+    <option value="">All Categories</option>
+    <option>Post-Op Recovery</option><option>Seamless Sculpt</option>
+    <option>Mid-Thigh Sculpt</option><option>Everyday Bras</option>
+    <option>Waist Sculpt</option><option>Built-in Bra Fajas</option>
+    <option>Open Bust Fajas</option><option>Strapless Fajas</option>
+    <option>Shaping Pants</option><option>Masculine Shapewear</option>
+  </select>
+  <select class="fsel" id="fcomp">
+    <option value="">All Compression</option>
+    <option>High</option><option>Medium</option><option>None</option>
+  </select>
+  <select class="fsel" id="fuse">
+    <option value="">All Uses</option>
+    <option>Post-Op</option><option>Daily Wear</option>
+  </select>
+  <span class="rcnt" id="rcnt"></span>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<!-- MODAL -->
+<div class="mov" id="modal" onclick="closeMov(event)">
+  <div class="mbox" id="mbox">
+    <div class="mimg"><img id="mImg" src="" alt=""></div>
+    <button class="mcl" onclick="closeModal()">×</button>
+    <div class="minfo">
+      <div class="mtags" id="mTags"></div>
+      <div class="msku" id="mSku"></div>
+      <div class="mname" id="mName"></div>
+      <div class="mdesc" id="mDesc"></div>
+      <div class="mdiv"></div>
+      <!-- PRICE CALCULATOR -->
+      <div class="pcalc">
+        <div class="pcalc-title">Price Calculator</div>
+        <div class="pcalc-row">
+          <label>Units</label>
+          <input class="pcalc-inp" type="number" id="pcInp" min="1" placeholder="Enter qty..." oninput="calcPrice()">
+        </div>
+        <div class="pcalc-result" id="pcResult">
+          <div class="pcalc-unit" id="pcUnit"></div>
+          <div class="pcalc-price" id="pcPrice"></div>
+          <div class="pcalc-total" id="pcTotal"></div>
+          <div class="pcalc-warn" id="pcWarn"></div>
+        </div>
+      </div>
+      <div class="mdiv"></div>
+      <div class="mqr">
+        <span class="mql">Units for quote</span>
+        <div class="mqc">
+          <button class="mqb" onclick="mCQ(-1)">−</button>
+          <input class="mqi" type="number" min="0" id="mQI" value="0" onchange="mSQ(this.value)">
+          <button class="mqb" onclick="mCQ(1)">+</button>
+        </div>
+        <button class="mab" id="mAB" onclick="mTog()">Add to Quote</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="fcta" id="fcta" onclick="openQ()">
+  <span>Request Quote</span>
+  <span class="fbadge" id="fbadge">0</span>
+</button>
+
+<div class="qp" id="qp">
+  <div class="qpt" onclick="closeQ()">
+    <h3>Quote Request <span class="qbadge" id="qbadge">0</span></h3>
+    <button class="xcl">×</button>
+  </div>
+  <div class="qpb">
+    <div class="qitems" id="qitems"></div>
+    <form class="qform" id="qform" onsubmit="submitQ(event)">
+      <div class="fg"><label>Business Name *</label><input id="bName" placeholder="Business name" required></div>
+      <div class="fg"><label>Contact Name *</label><input id="cName" placeholder="Your name" required></div>
+      <div class="fg"><label>Email *</label><input type="email" id="email" placeholder="email@business.com" required></div>
+      <div class="fg"><label>Phone / WhatsApp</label><input type="tel" id="phone" placeholder="+1 (305) 000-0000"></div>
+      <div class="fg"><label>Business Type</label>
+        <select id="bType">
+          <option value="">Select...</option>
+          <option>Plastic Surgery Clinic</option><option>Medical Spa</option>
+          <option>Boutique / Retail Store</option><option>Online Reseller</option>
+          <option>Distributor</option><option>Other</option>
+        </select>
+      </div>
+      <div class="fg"><label>Country / State</label><input id="loc" placeholder="Miami, FL"></div>
+      <div class="fg full"><label>Additional Notes</label><textarea id="notes" placeholder="Colors, sizes, customization, delivery timeline..."></textarea></div>
+      <button type="submit" class="sbtn" id="sbtn">Send Quote Request →</button>
+    </form>
+  </div>
+</div>
+
+<div class="sov" id="sov">
+  <div class="sbox">
+    <div class="sico">✓</div>
+    <h2>Quote Sent!</h2>
+    <p>Our wholesale team will contact you within 24 business hours.</p>
+    <p style="margin-top:10px;font-size:12px">Faster via WhatsApp: <strong>+1 (305) 481-1166</strong></p>
+    <button class="sccl" onclick="document.getElementById('sov').classList.remove('show')">Continue Browsing</button>
+  </div>
+</div>
+
+<script>
+const P=[{"sku": "P101", "name": "Post-Surgical Full Body Faja with Sleeves", "category": "Post-Op Recovery", "compression": "High", "use": "Post-Op", "desc": "Full body compression faja with sleeves, long legs and integrated bra. Maximum post-surgical support from shoulders to thighs. Ideal for tummy tuck, liposuction, and full body procedures.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055572/P101_izd3ot.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972924/Post-surgical_compression_faja_with_sleeves_long_legs_and_integrated_bra_-_P101_cqwjbx.png", "prices": [58, 54, 51, 48, 45]}, {"sku": "P102", "name": "Abrilia Fabric Compression Garment with Bra", "category": "Post-Op Recovery", "compression": "High", "use": "Post-Op", "desc": "Compression garment in premium Abrilia fabric with integrated bra. Soft against the skin while delivering high compression. Hypoallergenic and breathable.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055548/P102_hsq6uy.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972908/Compression_garment_with_integrated_bra_made_of_Abrilia_fabric_for_post-surgical_recovery_-_P102_nleb2b.png", "prices": [43, 40, 37, 35, 33]}, {"sku": "P128", "name": "Full Body Compression Faja with Integrated Bra", "category": "Post-Op Recovery", "compression": "High", "use": "Post-Op", "desc": "Full body compression faja with integrated bra for complete post-operative recovery. Uniform compression throughout the entire torso and legs.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055587/P128_rhfqwo.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972742/Full_body_compression_faja_with_integrated_bra_for_post-operative_recovery_-_P128_gciuns.png", "prices": [40, 37, 35, 33, 31]}, {"sku": "P130", "name": "Powernet Compression Faja for Post-Op Recovery", "category": "Post-Op Recovery", "compression": "High", "use": "Post-Op", "desc": "Premium Colombian Powernet compression faja for post-operative recovery. Medical-grade compression with ISO 9001:2015 certified construction.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055598/P130_zseuwe.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972917/Powernet_compression_faja_for_post-operative_recovery_-_P130_hipivb.png", "prices": [35, 33, 31, 29, 27]}, {"sku": "FB102", "name": "Full Body Compression Faja with Sleeves", "category": "Post-Op Recovery", "compression": "High", "use": "Post-Op", "desc": "Complete body compression garment with sleeves for full post-surgical recovery. Covers arms, torso and legs for maximum support.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055537/FB102_ojw65r.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972904/Complete_body_with_sleeves_-_FB102_jpstrn.png", "prices": [37, 34, 32, 30, 28]}, {"sku": "P744", "name": "Post-Op BBL Compression Faja (Black)", "category": "Post-Op Recovery", "compression": "High", "use": "Post-Op", "desc": "Specifically engineered for BBL recovery. Open seat design protects the grafted area while delivering high compression to abdomen and waist.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055645/P744_psjbqd.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972740/Post-operative_compression_faja_for_BBL_black_-_P744_ialsga.png", "prices": [35, 32, 30, 28, 26]}, {"sku": "B102", "name": "Post-Surgical Bra with Half Arm Sleeve", "category": "Post-Op Recovery", "compression": "Medium", "use": "Post-Op", "desc": "Post-surgical bra with half arm sleeve for upper body recovery after breast augmentation, mastopexy or arm liposuction.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055528/B102_njd4lc.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972923/Post-surgical_bra_with_half_arm_sleeve_-_B102_ajendg.png", "prices": [29, 27, 25, 24, 22]}, {"sku": "PB103", "name": "Post-Surgical Bra — Three Rows of Buckles", "category": "Post-Op Recovery", "compression": "Medium", "use": "Post-Op", "desc": "Adjustable post-surgical bra with three rows of buckles for progressive recovery. As swelling decreases, patients can tighten the fit.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055510/PB103_m02akm.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972902/Post-surgical_bra_with_three_rows_of_buckles_-_PB103_qgyoet.png", "prices": [28, 26, 24, 23, 21]}, {"sku": "S100", "name": "Non-Compression Sculpt T-Shirt", "category": "Seamless Sculpt", "compression": "None", "use": "Daily Wear", "desc": "Lightweight seamless sculpt T-shirt for everyday comfort and smooth silhouette. No compression — perfect for customers who want a seamless look without restriction.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055629/S100_pjha2e.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972924/Non-compression_T-shirt_-_S100_cjtm0v.png", "prices": [23, 21, 20, 19, 18]}, {"sku": "S101", "name": "Full-Body Shaper with Blue Compression", "category": "Seamless Sculpt", "compression": "Medium", "use": "Daily Wear", "desc": "Full-body seamless shaper with blue compression fabric. Medium compression provides comfortable all-day support from bust to thigh.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055632/S101_mbbu2g.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972747/Full-Body_Shaper_with_Blue_Compression_-_S101_p04hei.png", "prices": [23, 21, 20, 19, 18]}, {"sku": "S102", "name": "Full-Body Wide-Strap Shaper (Latex-Free)", "category": "Seamless Sculpt", "compression": "Medium", "use": "Daily Wear", "desc": "Latex-free full-body shaper with wide straps. Ideal for customers with latex sensitivity. Wide straps distribute pressure evenly.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055625/S102_oxvkzp.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972907/Full-Body_Wide-Strap_Latex-Free_-_S102_wcgkse.png", "prices": [0, 0, 0, 0, 0]}, {"sku": "SL102", "name": "Full-Body Wide-Strap Shaper with Latex", "category": "Seamless Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Full-body wide-strap shaper with latex for maximum waist compression and hourglass definition.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055625/S102_oxvkzp.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972914/Open-Bust_Slim_Powernet_Lycra_Lace_Shaper_with_Pre-Shaped_Booty_Padded_Straps_-_OB108_lwxfvv.png", "prices": [25, 23, 21, 20, 19]}, {"sku": "S103", "name": "Shaper with Bra and Short Straps", "category": "Seamless Sculpt", "compression": "Medium", "use": "Daily Wear", "desc": "Seamless shaper with integrated bra and short straps. All-in-one design replaces the need for a separate bra.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055623/S103_ttpexv.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972902/Shaper_with_Bra_Short_Straps_-_S103_pr48dt.png", "prices": [25, 23, 21, 20, 19]}, {"sku": "S104", "name": "Open-Bust Bodysuit — Wide Straps (Non-Compression)", "category": "Seamless Sculpt", "compression": "None", "use": "Daily Wear", "desc": "Open-bust bodysuit with wide straps, no compression. Light smoothing effect for daily use. Works with any bra.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055638/S104_avoohu.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972901/Open-Bust_Bodysuit_with_Wide_Straps_Non-Compression_-_S104_ubft9l.png", "prices": [23, 21, 20, 19, 18]}, {"sku": "S105", "name": "Open-Bust Brief-Cut Bodysuit", "category": "Seamless Sculpt", "compression": "Medium", "use": "Daily Wear", "desc": "Open-bust brief-cut seamless bodysuit. Works with any bra. Brief cut is less restrictive for all-day wear.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055634/S105_dpjb9r.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972920/Open-Bust_Brief-Cut_Bodysuit_-_S105_ikgeqc.png", "prices": [25, 23, 21, 20, 19]}, {"sku": "S106", "name": "Thong Bodysuit with Bra — Red", "category": "Seamless Sculpt", "compression": "None", "use": "Daily Wear", "desc": "Non-compression thong bodysuit with integrated bra in red. Eliminates VPL completely. Fashion-forward design.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055642/S106_ciojej.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972749/Thong_Bodysuit_with_Bra_Red_Non-Compression_-_S106_kusess.png", "prices": [25, 23, 21, 20, 19]}, {"sku": "S107", "name": "Blue Mesh Sculpt Shorts", "category": "Seamless Sculpt", "compression": "Medium", "use": "Daily Wear", "desc": "Blue mesh sculpt shorts for light compression and all-day comfort. Breathable mesh fabric ideal for warm climates.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055695/S107_ku09wu.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972741/Blue_Mesh_Shorts_-_S107_ee4pmw.png", "prices": [17, 16, 15, 14, 13]}, {"sku": "S108", "name": "Seamless Mid-Compression Short (Abdomen-Length)", "category": "Seamless Sculpt", "compression": "Medium", "use": "Daily Wear", "desc": "Seamless mid-compression abdominal short for daily support. Targeted core compression. Great for postpartum support.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055513/S108_fuqc98.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972905/Seamless_Mid-Compression_Short_Abdomen-Length_Short_Cut_-S108_bpt7zs.png", "prices": [22, 20, 19, 18, 16]}, {"sku": "S110", "name": "Seamless Strapless Shaper", "category": "Seamless Sculpt", "compression": "None", "use": "Daily Wear", "desc": "Seamless strapless shaper, no reinforced compression. Versatile under any outfit including strapless styles.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055636/S110_bhmhbf.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972907/Seamless_Strapless_No_Reinforced_Compression_-_S110_sccjiu.png", "prices": [20, 19, 17, 16, 15]}, {"sku": "S111", "name": "Non-Compression Seamless Shorts", "category": "Seamless Sculpt", "compression": "None", "use": "Daily Wear", "desc": "Non-compression seamless shorts for everyday comfort and smooth silhouette. Eliminates thigh chafing without restriction.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055697/S111_xwkwqc.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972915/Non-Compression_Shorts_-_S111_cnqel3.png", "prices": [15, 14, 13, 13, 12]}, {"sku": "S112", "name": "Compression Shorts with Silicone Lace Trim", "category": "Seamless Sculpt", "compression": "Medium", "use": "Daily Wear", "desc": "Compression shorts with silicone lace trim to prevent rolling. Medium compression smooths hips and thighs.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055640/S112_f4ywdl.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972748/Compression_Shorts_with_Silicone_Lace_Trim_-_S112_ecwvvy.png", "prices": [18, 17, 16, 15, 14]}, {"sku": "S113", "name": "Long-Sleeve Bodysuit with Latex", "category": "Seamless Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Long-sleeve seamless bodysuit with latex for maximum waist compression and full body shaping.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055699/S113_nfjj5q.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972894/Long-Sleeve_Bodysuit_with_Latex_-_S113_mgbgex.png", "prices": [25, 23, 21, 20, 19]}, {"sku": "SL114", "name": "Strapless Shaper with Latex", "category": "Seamless Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Strapless seamless shaper with latex for high compression without straps. Works under strapless outfits.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055550/SL114_mjinzy.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972921/Strapless_with_Latex_-_SL114_ftto2s.png", "prices": [22, 20, 19, 18, 16]}, {"sku": "SL115", "name": "Full-Body Shaper with Latex & Thin Straps", "category": "Seamless Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Full-body seamless shaper with latex and thin straps for maximum sculpting.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055570/SL115_pxcxfj.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972743/Full-Body_with_Latex_Thin_Straps_-_SL115_ummymi.png", "prices": [25, 23, 21, 20, 19]}, {"sku": "SH101", "name": "Abigail Short — 6 Boning Rods, Gold Hooks & Zipper", "category": "Seamless Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Abigail short with 6 boning rods, gold hooks and zipper. Boning rods prevent rolling. Gold hardware adds a premium touch.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055498/SH101_d3cjk0.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972908/Abigail_Short_with_6_Boning_Rods_Gold_Hooks_Zipper_-_SH101_m1l0hj.png", "prices": [35, 33, 31, 29, 27]}, {"sku": "SH102", "name": "Abigail Smooth Boxer — 6 Boning Rods", "category": "Seamless Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Smooth boxer-style short with 6 boning rods for structured daily compression. Boxer cut provides additional thigh coverage.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055504/SH102_dmfj4s.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972894/Abigail_Smooth_Boxer_with_6_Boning_Rods_-_SH102_f9zwaj.png", "prices": [26, 24, 23, 21, 20]}, {"sku": "SH103", "name": "Lace Brief in Powernet & Lycra — Heart-Shaped Back", "category": "Seamless Sculpt", "compression": "Medium", "use": "Daily Wear", "desc": "Lace brief in Powernet and Lycra with heart-shaped back that lifts and enhances the glutes. Flat seams for invisible wear.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055515/SH103_s5xj5y.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972912/Lace_Brief_in_Powernet_Lycra_Heart-Shaped_Back_Flat_Seams_-_SH103_iqqs14.png", "prices": [22, 20, 19, 18, 16]}, {"sku": "SH104", "name": "Powernet Short — 6 Boning Rods, Hooks & Zipper", "category": "Seamless Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Powernet short with 6 boning rods, hooks and zipper for maximum structured compression.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055526/SH104_agskqx.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972893/Powernet_Short_with_6_Boning_Rods_Hooks_Zipper_-_SH104_fgzp6y.png", "prices": [26, 24, 23, 21, 20]}, {"sku": "SH105", "name": "High-Waist Short — 8 Boning Rods & Zipper", "category": "Seamless Sculpt", "compression": "High", "use": "Daily Wear", "desc": "High-waist short with 8 boning rods and zipper for maximum abdominal and waist control.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055531/SH105_kb8nqu.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972919/High-Waist_Short_with_8_Boning_Rods_Zipper_-_SH105_g6avjt.png", "prices": [38, 36, 33, 31, 29]}, {"sku": "SH106", "name": "Abigail Smooth Short — 6 Boning Rods", "category": "Seamless Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Smooth Abigail short with 6 boning rods for structured daily wear. Clean finish for invisible wear under clothing.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055524/SH106_bgmm76.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972898/Abigail_Smooth_Short_with_6_Boning_Rods_-_SH106_mk5qsc.png", "prices": [28, 26, 24, 23, 21]}, {"sku": "SH107", "name": "Smooth Powernet Boyshort (Panty Boxer)", "category": "Seamless Sculpt", "compression": "Medium", "use": "Daily Wear", "desc": "Smooth Powernet boyshort in panty boxer style for comfortable daily compression.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055517/SH107_coebzk.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972909/Smooth_Powernet_Boyshort_Panty_Boxer_Style_-_SH107_o8iibl.png", "prices": [25, 23, 21, 20, 19]}, {"sku": "SH108", "name": "Latex Boxer Seamless", "category": "Seamless Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Seamless latex boxer for high waist compression and smooth silhouette. Boxer length covers the upper thigh.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055618/SH108_y3tjwk.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972744/Latex_Boxer_-_SH108_sv52ne.png", "prices": [20, 19, 17, 16, 15]}, {"sku": "SH109", "name": "Latex Short Seamless", "category": "Seamless Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Seamless latex short for maximum waist and abdominal compression.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055627/SH109_ghpdsq.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972912/Latex_Short_-_SH109_plnkeb.png", "prices": [22, 20, 19, 18, 16]}, {"sku": "SH111", "name": "Short-Length Latex Shaper Seamless", "category": "Seamless Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Short-length seamless latex shaper for targeted waist and abdominal compression.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055533/SH111_hjgr2w.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972741/Short-Length_Latex_Shaper_-_SH111_gvdvaf.png", "prices": [18, 17, 16, 15, 14]}, {"sku": "SH112", "name": "Abrilia Short Seamless", "category": "Seamless Sculpt", "compression": "Medium", "use": "Daily Wear", "desc": "Seamless Abrilia fabric short for soft, comfortable daily compression. Great for sensitive skin.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055522/SH112_qfx4cu.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972899/Abrilia_Short_-_SH112_zuyoki.png", "prices": [37, 34, 32, 30, 28]}, {"sku": "SHP112", "name": "Powernet Short Seamless", "category": "Seamless Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Seamless Powernet short for strong, structured daily compression.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055570/SL115_pxcxfj.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972897/Powernet_Short_-_SHP112_fafdob.png", "prices": [32, 30, 28, 26, 25]}, {"sku": "SH114", "name": "Low-Waist Brief Seamless", "category": "Seamless Sculpt", "compression": "None", "use": "Daily Wear", "desc": "Low-waist seamless brief for everyday comfort with smooth, invisible finish.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055501/SH114_qjated.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972916/Low-Waist_Brief_-_SH114_mnwlr5.png", "prices": [29, 27, 25, 24, 22]}, {"sku": "C101", "name": "Abigail Strapless Capri — Triple Booty Lift", "category": "Mid-Thigh Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Beige capri with zipper and triple booty lift enhancement for maximum sculpting to mid-thigh.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055620/C101_ojjlfu.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972921/Beige_Capri_with_Zipper_Abigail_-_C101_snom0a.png", "prices": [40, 37, 35, 33, 31]}, {"sku": "C102", "name": "Strapless Capri with Booty Lift", "category": "Mid-Thigh Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Strapless capri faja with booty lift effect for mid-thigh sculpting and waist definition.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055614/C102_sde6x9.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972920/Strapless_Capri_with_Triple_Booty_Lift_Enhancement_-_C102_ivytfe.png", "prices": [45, 42, 40, 37, 35]}, {"sku": "B101", "name": "Everyday Comfort Bra", "category": "Everyday Bras", "compression": "None", "use": "Daily Wear", "desc": "Everyday comfort bra for all-day support and comfort. Min. order: 500 units.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055520/B101_vimchb.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972898/Minimum_Order_Bra_500_Units_Required_-_B101_oy3pml.png", "prices": [40, 37, 35, 33, 31]}, {"sku": "B104", "name": "Top Bra Comfort Vest", "category": "Everyday Bras", "compression": "None", "use": "Daily Wear", "desc": "Top bra comfort vest for lightweight everyday support.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055506/B104_dmuw3s.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972903/Top_bra_-_B104_o0hlzc.png", "prices": [20, 19, 17, 16, 15]}, {"sku": "W101", "name": "Designed Latex Waist Trainer", "category": "Waist Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Designed latex waist trainer for maximum compression and hourglass figure definition.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055616/W101_i2eaxx.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972742/Comfort_Vest_-_W101_mx0kad.png", "prices": [32, 30, 28, 26, 24]}, {"sku": "W102", "name": "Daily-Wear Latex Waist Trainer", "category": "Waist Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Daily-wear latex waist trainer for consistent compression throughout the day.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055612/W102_r8dhze.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972746/Designed_Latex_Waist_Trainer_-_W102_hyupdw.png", "prices": [42, 39, 36, 34, 32]}, {"sku": "W105", "name": "Abigail Comfort Shaper — Gold Hook Closure", "category": "Waist Sculpt", "compression": "High", "use": "Daily Wear", "desc": "Abigail comfort waist shaper with gold hook closure for elegant waist definition.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055601/W105_h2yfu0.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972743/Daily-Wear_Waist_Trainer_-_W105_mlreju.png", "prices": [52, 48, 45, 42, 40]}, {"sku": "FB101", "name": "Hourglass Economy Short Shaper", "category": "Built-in Bra Fajas", "compression": "Medium", "use": "Daily Wear", "desc": "Economy hourglass short shaper with integrated bra for everyday sculpting and waist definition.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055544/FB101_pciwze.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972922/Abigail_Comfort_Shaper_with_Gold_Hook_Closure_-_FB101_naiiyy.png", "prices": [40, 37, 35, 33, 31]}, {"sku": "FB103", "name": "Slim Powernet Shaper with Lycra & Lace Trim", "category": "Built-in Bra Fajas", "compression": "High", "use": "Daily Wear", "desc": "Slim Powernet shaper with Lycra and lace trim for invisible booty and elegant finish.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055535/FB103_au7jzq.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972917/Hourglass_Economy_Short_Shaper_-_FB103_xqbd97.png", "prices": [40, 37, 35, 33, 31]}, {"sku": "FB104", "name": "Neo Powernet Shaper — Hyaluronic Lycra & Pre-Shaped Booty", "category": "Built-in Bra Fajas", "compression": "High", "use": "Daily Wear", "desc": "Neo Powernet with Hyaluronic Lycra, pre-shaped booty, integrated bra and padded straps.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055609/FB1004_srpjm7.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972744/Slim_Powernet_Shaper_with_Lycra_Lace_Trim_Invisible_Booty_Lightweight_Lycra_Bra_-_FB104_uh0q5b.png", "prices": [40, 37, 35, 33, 31]}, {"sku": "FB105", "name": "Short Shaper — Built-In Bra & Thin Straps", "category": "Built-in Bra Fajas", "compression": "Medium", "use": "Daily Wear", "desc": "Short shaper with integrated bra and thin straps for lightweight everyday sculpting.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055557/FB105_jbipk8.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972914/Neo_Powernet_Shaper_with_Hyaluronic_Lycra_Pre-Shaped_Booty_Bra_Padded_Straps_-_FB105_hvw2hh.png", "prices": [44, 41, 38, 36, 34]}, {"sku": "FB106", "name": "Short Powernet Shaper — Built-In Bra & Thin Straps", "category": "Built-in Bra Fajas", "compression": "High", "use": "Daily Wear", "desc": "Short Powernet shaper with integrated bra and thin straps for high compression.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055579/FB106_hjmz9k.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972905/Short_Shaper_with_Bra_Thin_Straps_-_FB106_hns4ge.png", "prices": [40, 37, 35, 33, 31]}, {"sku": "FB107", "name": "Powernet Short Leg Shaper — Four-Level Hooks", "category": "Built-in Bra Fajas", "compression": "High", "use": "Daily Wear", "desc": "Powernet & Lycra shaper with butt-lift effect and four levels of adjustable hooks.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055581/FB107_i6gegw.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972906/Short_Powernet_Shaper_with_Bra_Thin_Straps_-_FB107_t2ni5g.png", "prices": [40, 37, 35, 33, 31]}, {"sku": "FB108", "name": "Long Fusion Shaper with Built-In Bra", "category": "Built-in Bra Fajas", "compression": "High", "use": "Daily Wear", "desc": "Long fusion shaper with built-in bra, invisible butt seam and short leg.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055607/FB108_ajjd40.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972895/Powernet_Shapewear_with_Four_Hooks_-_FB108_p7edba.png", "prices": [42, 39, 36, 34, 32]}, {"sku": "FB109", "name": "Long Abrilia Shaper — Padded Straps & Removable Strap", "category": "Built-in Bra Fajas", "compression": "High", "use": "Daily Wear", "desc": "Long Abrilia shaper with padded straps, invisible butt seam and removable strap.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055605/FB109_e33o3h.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972780/Long_Fusion_Shaper_with_Built-In_Bra_-_FB109_bewais.png", "prices": [46, 43, 40, 37, 35]}, {"sku": "FB110", "name": "Open-Bust Knee-Length Powernet Shaper", "category": "Built-in Bra Fajas", "compression": "High", "use": "Daily Wear", "desc": "Open-bust knee-length Powernet shaper with invisible booty for maximum coverage.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055563/FB110_tmgtg8.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972747/Powernet_built_in_bra_shapewear_with_removable_and_adjustable_padded_straps_-_FB110_evd2nl.png", "prices": [48, 45, 42, 39, 37]}, {"sku": "FB111/FB112", "name": "Short Overlay-Strap Shaper — Pre-Shaped Booty", "category": "Built-in Bra Fajas", "compression": "High", "use": "Daily Wear", "desc": "Short overlay-strap shaper with pre-shaped booty and boning support.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055561/FB111_vhxdna.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972911/Long_Abrilia_Fabric_Shaper_with_Padded_Straps_-_FB111_FB112_mvrbfu.png", "prices": [40, 37, 35, 33, 31]}, {"sku": "FB113", "name": "Abrilia Shaper — Pre-Shaped Booty & Dynamic Lycra 360°", "category": "Built-in Bra Fajas", "compression": "High", "use": "Daily Wear", "desc": "Abrilia shaper with pre-shaped booty, padded straps and Dynamic Lycra 360°.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055583/FB113_gtaf2w.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972746/Powernet_Shapewear_with_thin_adjustable_and_removable_straps_-_FB113_vxr6tl.png", "prices": [40, 37, 35, 33, 31]}, {"sku": "OB101", "name": "Angelical Economy 360° Short Open-Bust Shaper", "category": "Open Bust Fajas", "compression": "Medium", "use": "Daily Wear", "desc": "Angelical economy 360° short open-bust shaper for everyday versatile compression.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055539/OB101_x62evm.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972918/Open-Bust_Knee-Length_Shaper_in_Powernet_with_Invisible_Booty_-_OB101_pbopyk.png", "prices": [38, 35, 33, 31, 29]}, {"sku": "OB102", "name": "Short Open-Bust Shaper", "category": "Open Bust Fajas", "compression": "High", "use": "Daily Wear", "desc": "Short open-bust Powernet shaper for high compression and waist definition. Works with any bra.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055546/OB102_yspdqi.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972924/Short_Overlay-Strap_Shaper_with_Pre-Shaped_Booty_Boning_Support_-_OB102_sgamc6.png", "prices": [38, 35, 33, 31, 29]}, {"sku": "OB103", "name": "Short Open-Bust Shaper — Pre-Shaped Booty", "category": "Open Bust Fajas", "compression": "High", "use": "Daily Wear", "desc": "Short open-bust shaper with pre-shaped booty for enhanced curves and waist definition.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055541/OB103_qw7zfo.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972915/Abrilia_Fabric_Shaper_with_Pre-Shaped_Booty_Padded_Straps_Dynamic_Lycra_-_OB103_s00fnz.png", "prices": [38, 35, 33, 31, 29]}, {"sku": "OB104", "name": "Eliot Powernet & Lycra Shaper — Pre-Shaped Booty", "category": "Open Bust Fajas", "compression": "High", "use": "Daily Wear", "desc": "Eliot Powernet & Lycra open-bust shaper with pre-shaped booty and padded straps.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055585/OB104_ny8tm2.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972901/360_Angelical_Economy_Shaper_-_OB104_fuwpbh.png", "prices": [38, 35, 33, 31, 29]}, {"sku": "OBS104", "name": "Short Open-Bust Shaper (Economy)", "category": "Open Bust Fajas", "compression": "Medium", "use": "Daily Wear", "desc": "Economy short open-bust shaper for everyday accessible compression.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055508/OBS104_ookt6g.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972899/360_Short_Open-Bust_Shaper_-_OBS104_gp2jx9.png", "prices": [38, 35, 33, 31, 29]}, {"sku": "OB105", "name": "Short Open-Bust Shaper — Pre-Shaped Booty (Classic)", "category": "Open Bust Fajas", "compression": "High", "use": "Daily Wear", "desc": "Classic short open-bust shaper with pre-shaped booty for everyday wear.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055577/OB105_k4mq3d.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972906/Short_Open-Bust_Shaper_with_Pre-Shaped_Booty_-_OB105_osfcch.png", "prices": [38, 35, 33, 31, 29]}, {"sku": "OB106", "name": "Open-Bust Slim Powernet & Lycra Lace Shaper", "category": "Open Bust Fajas", "compression": "High", "use": "Daily Wear", "desc": "Slim open-bust Powernet & Lycra lace shaper with pre-shaped booty and padded straps.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055552/OB106_jmq6cd.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972740/Eliot_Powernet_Lycra_Shaper_with_Pre-Shaped_Booty_Padded_Straps_-_OB106_lhtott.png", "prices": [38, 35, 33, 31, 29]}, {"sku": "OB107", "name": "Powernet Shaper — Eliot Lycra & Pre-Shaped Booty", "category": "Open Bust Fajas", "compression": "High", "use": "Daily Wear", "desc": "Powernet shaper with Eliot Lycra, pre-shaped booty and padded straps.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055568/OB107_gyt8dt.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972911/Powernet_Shaper_with_Eliot_Lycra_Pre-Shaped_Booty_Padded_Straps_-_OB107_n7f8qh.png", "prices": [38, 35, 33, 31, 29]}, {"sku": "OB108", "name": "Open-Bust Slim Powernet & Lycra Lace — Padded Straps", "category": "Open Bust Fajas", "compression": "High", "use": "Daily Wear", "desc": "Slim open-bust Powernet & Lycra lace shaper with pre-shaped booty and padded straps.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055594/OB108_fjnydz.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972914/Open-Bust_Slim_Powernet_Lycra_Lace_Shaper_with_Pre-Shaped_Booty_Padded_Straps_-_OB108_lwxfvv.png", "prices": [38, 35, 33, 31, 29]}, {"sku": "OB111", "name": "Comfort Open-Bust Shaper — Abrilia Fabric", "category": "Open Bust Fajas", "compression": "Medium", "use": "Daily Wear", "desc": "Comfort open-bust shaper in Abrilia fabric with invisible butt seam and short leg.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055575/OB111_mq2x5t.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972925/Comfort_Open-Bust_Shaper_-_OB111_vjufwd.png", "prices": [44, 41, 38, 36, 34]}, {"sku": "OB112", "name": "Strapless Powernet Shaper — Long Boning & Gold Hooks", "category": "Open Bust Fajas", "compression": "High", "use": "Daily Wear", "desc": "Strapless Powernet shaper with long boning rods and gold hook closure.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055559/OB112_swylfs.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972918/Abrilia_Faja_with_Rods_-_OB112_c60xil.png", "prices": [38, 35, 33, 31, 29]}, {"sku": "RS102", "name": "Strapless Powernet Shaper — Long Boning & Gold Hooks", "category": "Strapless Fajas", "compression": "High", "use": "Daily Wear", "desc": "Strapless Powernet shaper with long boning and gold hook closure. Stays in place without straps.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055590/RS102_lcve7s.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972900/Strapless_Powernet_Shaper_with_Long_Boning_Gold_Hook_Closure_-_RS102_kes9sd.png", "prices": [38, 35, 33, 31, 29]}, {"sku": "RS103", "name": "Sirena Strapless — Abigail Edition", "category": "Strapless Fajas", "compression": "High", "use": "Daily Wear", "desc": "Sirena strapless faja in the premium Abigail edition for superior strapless compression.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055596/RS103_t6qffb.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972748/Sirena_Strapless_Abigail_Edition_-_RS103_rhtgzy.png", "prices": [42, 39, 36, 34, 32]}, {"sku": "AP101", "name": "Trousers with Built-In Shaper", "category": "Shaping Pants", "compression": "Medium", "use": "Daily Wear", "desc": "Elegant trousers with built-in shaper for effortless everyday sculpting.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055603/AP101_or5nri.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972912/Trousers_with_Built-In_Shaper_-_AP101_xcqxtj.png", "prices": [42, 39, 36, 34, 32]}, {"sku": "M101", "name": "Masculine Compression Vest", "category": "Masculine Shapewear", "compression": "Medium", "use": "Daily Wear", "desc": "Masculine compression vest for chest and abdominal compression. Discreet, comfortable fit.", "img": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1775055592/M101_phjrrb.png", "img_popup": "https://res.cloudinary.com/dvmoqlurv/image/upload/v1774972910/Masculine_Compression_Vest_-_M101_slgelo.png", "prices": [36, 33, 31, 29, 27]}];
+const cart={};
+let aSku=null;
+let aPrices=null;
+
+// FAQ DATA
+const faqs=[
+  {q:"What are the minimum order quantities?",a:`<ul><li><strong>Fajas:</strong> 60 units minimum. Can be distributed across up to 3 different references.</li><li><strong>Seamless:</strong> 100 units minimum. Must be a single style — cannot be distributed by reference.</li><li><strong>Private Label:</strong> 250 units minimum to produce under your own brand name and packaging.</li><li><strong>Custom colors</strong> beyond Black, Nude & Cocoa require 100 units minimum per color.</li></ul>`},
+  {q:"What sizes are available? Are there surcharges?",a:`<p>Sizes available: <strong>2XS through 8XL</strong>.</p><ul><li>3XL: +$1.00 per unit</li><li>4XL: +$2.00 per unit</li><li>5XL: +$3.00 per unit</li><li>6XL: +$4.00 per unit</li><li>7XL: +$5.00 per unit</li><li>8XL: +$6.00 per unit</li></ul><p>Standard sizes (2XS–2XL) have no surcharge.</p>`},
+  {q:"How does the payment process work?",a:`<p><strong>50% upfront</strong> to begin manufacturing your order. The remaining <strong>50% upon delivery</strong> of the merchandise. We accept wire transfer and other methods — contact us for details.</p>`},
+  {q:"How do I request a sample?",a:`<ul><li>Pay <strong>50% of the sample value upfront</strong> to request a sample.</li><li>If you place a business order after receiving the sample, the remaining 50% of the sample cost is waived.</li><li>Maximum of <strong>2 samples per client</strong>.</li><li>If you are already a client and want to see additional products, sample shipping is <strong>completely free</strong>.</li></ul>`},
+  {q:"How can I track my order status?",a:`<p>Production takes <strong>30–40 business days</strong>. Our team will proactively contact you <strong>every week</strong> with progress updates.</p><p style="margin-top:8px">If you have questions before your weekly update, don't hesitate to reach us at any time via WhatsApp at <strong>+1 (305) 481-1166</strong>.</p>`},
+  {q:"Do you offer Private Label?",a:`<p>Yes. With a minimum of <strong>250 units</strong>, you can sell our premium Colombian shapewear under your own brand name with custom labels and packaging. Contact us to discuss specifications, timelines, and pricing.</p>`},
+  {q:"What colors are available?",a:`<p>Standard colors available with no minimum surcharge: <strong>Black, Nude & Cocoa</strong>.</p><p style="margin-top:6px">Custom colors require a minimum of <strong>100 units per color</strong> for fajas. Contact us to discuss additional color options.</p>`},
+  {q:"How long does production take?",a:`<p>Standard wholesale orders ship within <strong>30–40 business days</strong> from order confirmation and initial payment. Custom or private label orders may require additional time. Our team will provide an exact timeline when your order is confirmed.</p>`},
+];
+
+function renderFAQ(){
+  const g=document.getElementById('faqGrid');
+  g.innerHTML=faqs.map((f,i)=>`
+    <div class="faq-item" id="faq-${i}">
+      <div class="faq-q" onclick="toggleFAQ(${i})">
+        <span>${f.q}</span>
+        <div class="faq-icon">
+          <svg viewBox="0 0 10 6" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l4 4 4-4"/></svg>
+        </div>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">${f.a}</div></div>
+    </div>`).join('');
+}
+function toggleFAQ(i){
+  const el=document.getElementById('faq-'+i);
+  el.classList.toggle('open');
+}
+
+function sid(sku){return sku.replace(/[^a-zA-Z0-9]/g,'');}
+
+function getPriceForQty(prices,qty){
+  if(qty>=1000)return prices[4];
+  if(qty>=720)return prices[3];
+  if(qty>=500)return prices[2];
+  if(qty>=240)return prices[1];
+  if(qty>=60)return prices[0];
+  return null;
+}
+
+function calcPrice(){
+  const inp=document.getElementById('pcInp');
+  const qty=parseInt(inp.value)||0;
+  const res=document.getElementById('pcResult');
+  const warn=document.getElementById('pcWarn');
+  if(!aPrices||qty<1){res.classList.remove('show');return;}
+  const price=getPriceForQty(aPrices,qty);
+  if(!price){
+    res.classList.add('show');
+    document.getElementById('pcUnit').textContent='';
+    document.getElementById('pcPrice').textContent='';
+    document.getElementById('pcTotal').textContent='';
+    warn.textContent='Minimum order is 60 units for fajas, 100 for seamless.';
+    return;
+  }
+  warn.textContent='';
+  let tier='';
+  if(qty>=1000)tier='1,000+ units';
+  else if(qty>=720)tier='720–999 units';
+  else if(qty>=500)tier='500–719 units';
+  else if(qty>=240)tier='240–499 units';
+  else tier='60–239 units';
+  res.classList.add('show');
+  document.getElementById('pcUnit').textContent=tier+' tier';
+  document.getElementById('pcPrice').textContent='$'+price.toFixed(2)+' / unit';
+  document.getElementById('pcTotal').textContent='Total for '+qty+' units: $'+(price*qty).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function filt(){
+  const s=document.getElementById('srch').value.toLowerCase();
+  const c=document.getElementById('fcat').value;
+  const co=document.getElementById('fcomp').value;
+  const u=document.getElementById('fuse').value;
+  return P.filter(p=>{
+    if(s&&!p.name.toLowerCase().includes(s)&&!p.sku.toLowerCase().includes(s))return false;
+    if(c&&p.category!==c)return false;
+    if(co&&p.compression!==co)return false;
+    if(u&&p.use!==u)return false;
+    return true;
+  });
+}
+
+function render(){
+  const f=filt();
+  const g=document.getElementById('grid');
+  document.getElementById('rcnt').textContent=f.length+' products';
+  if(!f.length){g.innerHTML='<div class="empty"><h3>No products found</h3><p>Try different filters.</p></div>';return;}
+  g.innerHTML=f.map(p=>{
+    const cc=p.compression==='High'?'bcH':p.compression==='Medium'?'bcM':'bcN';
+    const uc=p.use==='Post-Op'?'buP':'buD';
+    const inC=cart[p.sku]&&cart[p.sku].qty>0;
+    const qid='qi-'+sid(p.sku);
+    return `<div class="card${inC?' sel':''}" id="card-${sid(p.sku)}" onclick="openModal('${p.sku}')">
+      <div class="iw">
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
+        <span class="bc ${cc}">${p.compression} Comp.</span>
+        <span class="bu ${uc}">${p.use}</span>
+      </div>
+      <div class="info">
+        <div class="sc"><span class="psku">${p.sku}</span><span class="pcat">${p.category}</span></div>
+        <div class="pname">${p.name}</div>
+        <div class="pdesc">${p.desc}</div>
+        <button class="vmore" onclick="event.stopPropagation();openModal('${p.sku}')">View details + pricing →</button>
+        <div class="qrow" onclick="event.stopPropagation()">
+          <span class="ql">Units</span>
+          <div class="qc">
+            <button class="qb" onclick="cQ('${p.sku}',-1)">−</button>
+            <input class="qi" type="number" min="0" value="${inC?cart[p.sku].qty:0}" id="${qid}" onchange="sQ('${p.sku}',this.value)">
+            <button class="qb" onclick="cQ('${p.sku}',1)">+</button>
+          </div>
+          <button class="ab${inC?' on':''}" onclick="tCart('${p.sku}')" id="ab-${sid(p.sku)}">${inC?'Added ✓':'Add'}</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openModal(sku){
+  const p=P.find(x=>x.sku===sku);if(!p)return;
+  aSku=sku;aPrices=p.prices;
+  document.getElementById('mImg').src=p.img_popup;
+  document.getElementById('mImg').alt=p.name;
+  document.getElementById('mSku').textContent=p.sku;
+  document.getElementById('mName').textContent=p.name;
+  document.getElementById('mDesc').textContent=p.desc;
+  const uc=p.use==='Post-Op'?'mt-uP':'mt-uD';
+  const cc='mt-c'+p.compression.charAt(0);
+  document.getElementById('mTags').innerHTML=
+    `<span class="mt mt-cat">${p.category}</span>`+
+    `<span class="mt ${cc}">${p.compression} Compression</span>`+
+    `<span class="mt ${uc}">${p.use}</span>`;
+  const qty=cart[sku]?cart[sku].qty:0;
+  document.getElementById('mQI').value=qty;
+  document.getElementById('pcInp').value='';
+  document.getElementById('pcResult').classList.remove('show');
+  const btn=document.getElementById('mAB');
+  btn.textContent=qty>0?'Added ✓  —  Update':'Add to Quote';
+  btn.classList.toggle('on',qty>0);
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';aSku=null;aPrices=null;}
+function closeMov(e){if(e&&e.target!==document.getElementById('modal'))return;closeModal();}
+function mCQ(d){const i=document.getElementById('mQI');i.value=Math.max(0,(parseInt(i.value)||0)+d);syncMBtn();}
+function mSQ(v){document.getElementById('mQI').value=Math.max(0,parseInt(v)||0);syncMBtn();}
+function syncMBtn(){
+  const qty=parseInt(document.getElementById('mQI').value)||0;
+  const btn=document.getElementById('mAB');
+  btn.textContent=qty>0?'Added ✓  —  Update':'Add to Quote';
+  btn.classList.toggle('on',qty>0);
+}
+function mTog(){
+  if(!aSku)return;
+  const qty=parseInt(document.getElementById('mQI').value)||0;
+  const p=P.find(x=>x.sku===aSku);
+  if(qty>0)cart[aSku]={...p,qty};
+  else delete cart[aSku];
+  upUI(aSku);syncMBtn();
+}
+function cQ(sku,d){
+  const i=document.getElementById('qi-'+sid(sku));if(!i)return;
+  i.value=Math.max(0,(parseInt(i.value)||0)+d);sQ(sku,i.value);
+}
+function sQ(sku,v){
+  const qty=Math.max(0,parseInt(v)||0);
+  const p=P.find(x=>x.sku===sku);if(!p)return;
+  if(qty>0)cart[sku]={...p,qty};else delete cart[sku];
+  upUI(sku);
+}
+function tCart(sku){
+  const i=document.getElementById('qi-'+sid(sku));if(!i)return;
+  const cur=cart[sku]?cart[sku].qty:0;
+  i.value=cur>0?0:1;sQ(sku,i.value);
+}
+function upUI(sku){
+  const count=Object.keys(cart).length;
+  document.getElementById('qbadge').textContent=count;
+  document.getElementById('fbadge').textContent=count;
+  document.getElementById('fcta').classList.toggle('vis',count>0);
+  const card=document.getElementById('card-'+sid(sku));
+  const btn=document.getElementById('ab-'+sid(sku));
+  const qty=cart[sku]?cart[sku].qty:0;
+  if(card)card.classList.toggle('sel',qty>0);
+  if(btn){btn.textContent=qty>0?'Added ✓':'Add';btn.classList.toggle('on',qty>0);}
+  if(document.getElementById('qp').classList.contains('open'))renderQI();
+}
+function renderQI(){
+  const items=Object.values(cart);
+  const c=document.getElementById('qitems');
+  if(!items.length){c.innerHTML='<p style="color:rgba(255,255,255,.3);font-size:12px;padding:14px 0">No products selected. Browse the catalog above.</p>';return;}
+  c.innerHTML=items.map(i=>`<div class="qitem">
+    <img class="qiimg" src="${i.img}" alt="${i.name}">
+    <div><div class="qiname">${i.name}</div><div class="qisku">${i.sku} · ${i.category}</div></div>
+    <div class="qiqty">Qty: ${i.qty}</div>
+    <button class="qirm" onclick="sQ('${i.sku}',0);renderQI()">×</button>
+  </div>`).join('');
+}
+function openQ(){renderQI();document.getElementById('qp').classList.add('open');document.body.style.overflow='hidden';}
+function closeQ(){document.getElementById('qp').classList.remove('open');document.body.style.overflow='';}
+function submitQ(e){
+  e.preventDefault();
+  const btn=document.getElementById('sbtn');
+  btn.disabled=true;btn.textContent='Sending...';
+  const items=Object.values(cart);
+  const subj=encodeURIComponent('Wholesale Quote Request — Noga Curves');
+  const body=encodeURIComponent(
+    'WHOLESALE QUOTE REQUEST\n'+'─'.repeat(40)+'\n\n'+
+    'Business: '+document.getElementById('bName').value+'\n'+
+    'Contact: '+document.getElementById('cName').value+'\n'+
+    'Email: '+document.getElementById('email').value+'\n'+
+    'Phone: '+document.getElementById('phone').value+'\n'+
+    'Type: '+document.getElementById('bType').value+'\n'+
+    'Location: '+document.getElementById('loc').value+'\n\n'+
+    'PRODUCTS REQUESTED:\n'+items.map(i=>`- ${i.sku} | ${i.name} | Qty: ${i.qty}`).join('\n')+'\n\n'+
+    'NOTES:\n'+document.getElementById('notes').value
+  );
+  window.open(`mailto:contact@nogacurves.com?subject=${subj}&body=${body}`,'_blank');
+  setTimeout(()=>{
+    closeQ();
+    document.getElementById('sov').classList.add('show');
+    btn.disabled=false;btn.textContent='Send Quote Request →';
+  },800);
+}
+['srch','fcat','fcomp','fuse'].forEach(id=>{
+  document.getElementById(id).addEventListener(id==='srch'?'input':'change',render);
+});
+renderFAQ();
+render();
+</script>
+</body>
+</html>
